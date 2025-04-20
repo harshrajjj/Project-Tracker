@@ -143,3 +143,65 @@ Or register a new account through the application's registration page (all new r
 - `POST /api/comments` - Add comment to task
 - `PUT /api/comments/:id` - Update comment
 - `DELETE /api/comments/:id` - Delete comment
+
+## Deployment
+
+### Deploying to Render
+
+#### Backend Deployment
+
+1. Create a new Web Service on Render
+   - Connect your GitHub repository
+   - Select the repository and branch
+   - Set the Root Directory to `Server`
+   - Set the Build Command to `npm install`
+   - Set the Start Command to `node server.js`
+
+2. Add the following environment variables in the Render dashboard:
+   ```
+   PORT=10000 (or any port Render assigns)
+   MONGO_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret_key
+   JWT_EXPIRE=30d
+   CLIENT_URL=https://your-frontend-url.onrender.com
+   NODE_ENV=production
+   ```
+
+3. Deploy the service
+
+#### Frontend Deployment
+
+1. Create a `.env.production` file in the Client directory with:
+   ```
+   VITE_API_URL=https://your-backend-url.onrender.com/api
+   ```
+
+2. Create a new Static Site on Render
+   - Connect your GitHub repository
+   - Set the Root Directory to `Client`
+   - Set the Build Command to `npm install && npm run build`
+   - Set the Publish Directory to `dist`
+
+3. Add the following environment variables in the Render dashboard:
+   ```
+   VITE_API_URL=https://your-backend-url.onrender.com/api
+   ```
+
+4. Deploy the site
+
+### Troubleshooting Deployment Issues
+
+#### 401 Unauthorized Errors
+- Check that the JWT_SECRET is correctly set in your backend environment variables
+- Ensure the frontend is sending the token correctly in the Authorization header
+- Verify CORS settings allow requests from your frontend domain
+
+#### 404 Not Found Errors
+- Confirm API endpoints are correctly formatted in the frontend code
+- Check that the VITE_API_URL environment variable is set correctly
+- Verify the backend server is running and accessible
+
+#### Connection Issues
+- Ensure your MongoDB connection string is correct and the database is accessible
+- Check that your backend service is running without errors
+- Verify network rules allow connections between your frontend and backend

@@ -1,8 +1,19 @@
 import axios from 'axios';
 
+// Determine if we're in production or development
+const isProduction = import.meta.env.PROD;
+
+// In production, we might need to use the full URL of the API
+// For Render deployments, you might need to use the actual URL of your backend
+const apiBaseURL = isProduction
+  ? (import.meta.env.VITE_API_URL || '/api') // Use environment variable if available
+  : '/api'; // Use relative path in development
+
+console.log('API Base URL:', apiBaseURL);
+
 // Create an instance of axios with default config
 const axiosInstance = axios.create({
-  baseURL: '/api',
+  baseURL: apiBaseURL,
   withCredentials: true, // Important for cookies
   headers: {
     'Content-Type': 'application/json',

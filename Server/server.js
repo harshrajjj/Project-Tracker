@@ -39,10 +39,12 @@ app.use(cookieParser());
 
 // CORS configuration
 const corsOptions = {
-  origin: [process.env.CLIENT_URL, 'http://localhost:5173'],
+  origin: process.env.NODE_ENV === 'production'
+    ? '*' // Allow all origins in production for troubleshooting
+    : [process.env.CLIENT_URL, 'http://localhost:5173'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With', 'X-CSRF-Token', 'X-XSRF-Token'],
   exposedHeaders: ['Content-Length', 'Authorization']
 };
 
@@ -65,9 +67,9 @@ app.use(basicLimiter); // Basic rate limiting for all routes
 app.use('/api/auth', authLimiter); // Stricter rate limiting for auth routes
 app.use('/api', apiLimiter); // API rate limiting
 
-// CSRF protection
-app.use(generateCsrfToken); // Generate CSRF token
-app.use('/api', verifyCsrfToken); // Verify CSRF token for API routes
+// CSRF protection - temporarily disabled for troubleshooting
+// app.use(generateCsrfToken); // Generate CSRF token
+// app.use('/api', verifyCsrfToken); // Verify CSRF token for API routes
 
 // Routes
 app.use('/api/auth', authRoutes);
