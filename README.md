@@ -26,6 +26,11 @@ A MERN stack application for managing projects and tasks with role-based access 
   - Role-based authorization
   - API rate limiting
 
+- **Deployment Optimizations**
+  - Handling of Render free tier cold starts
+  - Dynamic CORS configuration for Vercel preview deployments
+  - Extended timeout settings for API requests
+
 ## Tech Stack
 
 ### Frontend
@@ -202,7 +207,32 @@ Or register a new account through the application's registration page (all new r
    VITE_API_URL=https://your-backend-url.onrender.com/api
    ```
 
+   Note: The frontend is configured to handle Render's cold starts with extended timeouts (60 seconds). This ensures that login and other API requests will wait long enough for the server to wake up from sleep mode.
+
 5. Deploy the site
+
+### Handling Render Free Tier Cold Starts
+
+When using Render's free tier for backend hosting, the server will go to sleep after 15 minutes of inactivity. This can cause delays when users try to log in or use the application after a period of inactivity.
+
+#### How Cold Starts Are Handled in This Application
+
+1. **Extended Timeout Settings**:
+   - The application is configured with a 60-second timeout for API requests (instead of the default 15 seconds)
+   - This gives the Render server enough time to wake up and respond to requests
+
+2. **Server Wake-up Mechanism**:
+   - The frontend automatically pings the backend when the application loads
+   - This helps wake up the server before the user tries to log in
+   - Users are shown appropriate loading indicators and notifications
+
+3. **User Feedback**:
+   - Loading indicators inform users that the server might take up to a minute to start
+   - Toast notifications provide context about the potential delay
+
+#### Upgrading to Paid Tier
+
+For production use, consider upgrading to Render's paid tier to eliminate cold starts. The paid tier keeps your server running continuously, providing a much better user experience.
 
 ### Troubleshooting Deployment Issues
 
@@ -216,7 +246,13 @@ Or register a new account through the application's registration page (all new r
 - Check that the VITE_API_URL environment variable is set correctly
 - Verify the backend server is running and accessible
 
+#### CORS Issues
+- Ensure your backend CORS configuration includes all necessary frontend domains
+- For Vercel deployments, remember that preview deployments get unique URLs
+- The application is configured to allow all domains containing 'project-tracker'
+
 #### Connection Issues
 - Ensure your MongoDB connection string is correct and the database is accessible
 - Check that your backend service is running without errors
 - Verify network rules allow connections between your frontend and backend
+- For cold start issues, wait up to a minute for the server to wake up
