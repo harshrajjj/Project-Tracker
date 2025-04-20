@@ -7,20 +7,20 @@ A MERN stack application for managing projects and tasks with role-based access 
 - **User Authentication & Authorization (JWT)**
   - Admin can create projects and assign tasks to team members
   - Team members can view projects and update task status
-  
+
 - **Project Management**
   - Admin can create and manage projects
   - All users can view projects
-  
+
 - **Task Management**
   - Tasks with title, description, assigned user, status, and priority
   - Filter tasks by user, priority, status, etc.
   - Sort tasks by various criteria
-  
+
 - **Comments System**
   - All team members can comment on tasks
   - Comment history with timestamps
-  
+
 - **Security**
   - JWT-based authentication with HTTP-only cookies
   - Role-based authorization
@@ -93,6 +93,27 @@ npm run dev
 ```
 
 3. Access the application at http://localhost:5173
+
+### Admin Account Setup
+
+The application requires an admin user to create projects and assign tasks. You can create an admin account using the provided seeder script:
+
+```
+cd Server
+npm run seed:admin
+```
+
+This will create an admin user with the following credentials:
+- Email: admin@example.com
+- Password: password123
+
+You can also create a regular team member account using:
+
+```
+npm run seed:team
+```
+
+Or register a new account through the application's registration page (all new registrations are assigned the 'team-member' role by default).
 
 ## API Documentation
 

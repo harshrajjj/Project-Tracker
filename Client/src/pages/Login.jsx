@@ -167,12 +167,7 @@ const Login = () => {
           </p>
         </div>
 
-        <div className="mt-6 border-t border-blue-800/30 pt-4">
-          <div className="text-center text-xs text-blue-300">
-            <p>Demo Admin Account:</p>
-            <p className="font-mono bg-blue-900/30 p-2 rounded mt-1 text-blue-200 border border-blue-800/30">admin@example.com / password123</p>
-          </div>
-        </div>
+
       </div>
     </div>
   );
