@@ -37,19 +37,44 @@ app.use(cookieParser());
 
 // No session configuration needed
 
-// CORS configuration
+// CORS configuration - using a function to dynamically check origins
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production'
-    ? ['https://project-tracker-iota.vercel.app', 'https://project-tracker-coyuius0v-harshs-projects-abc9a55a.vercel.app', process.env.CLIENT_URL] // Allow all Vercel domains
-    : [process.env.CLIENT_URL, 'http://localhost:5173'],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, etc)
+    if (!origin) return callback(null, true);
+
+    // Check if the origin is allowed
+    if (
+      // Allow localhost for development
+      origin.includes('localhost') ||
+      // Allow all Vercel preview domains for your project
+      origin.includes('project-tracker') ||
+      // Allow specific domains
+      origin === process.env.CLIENT_URL
+    ) {
+      return callback(null, true);
+    }
+
+    // Log the origin that was rejected
+    console.log('CORS blocked origin:', origin);
+    callback(new Error('Not allowed by CORS'));
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With', 'X-CSRF-Token', 'X-XSRF-Token'],
   exposedHeaders: ['Content-Length', 'Authorization']
 };
 
-// If you're still having CORS issues, uncomment this line to allow all origins
-// app.use(cors({ origin: '*', credentials: false }));
+// EMERGENCY FALLBACK: If you're still having CORS issues after deploying the above changes,
+// comment out the corsOptions configuration above and uncomment these lines instead:
+/*
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With', 'X-CSRF-Token', 'X-XSRF-Token']
+}));
+console.log('CORS configured to allow all origins');
+*/
 
 // Use the configured CORS options
 app.use(cors(corsOptions));
@@ -57,6 +82,12 @@ console.log('CORS configured with options:', corsOptions);
 
 // Enable pre-flight for all routes
 app.options('*', cors(corsOptions));
+
+// Log all incoming requests for debugging
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path} - Origin: ${req.headers.origin || 'No origin'} - IP: ${req.ip}`);
+  next();
+});
 
 app.use(morgan('dev'));
 
