@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import AuthContext from '../context/AuthContext';
@@ -10,8 +10,15 @@ const Login = () => {
     password: ''
   });
 
-  const { login } = useContext(AuthContext);
+  const { login, isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
 
   const { email, password } = formData;
 
@@ -61,18 +68,18 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-[80vh] page-transition">
-      <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-200 w-full max-w-md">
+    <div className="flex justify-center items-center min-h-[80vh] page-transition relative z-10">
+      <div className="bg-blue-950/30 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-blue-800/30 w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-100 text-indigo-600 mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600/30 text-blue-300 mb-4 shadow-lg shadow-blue-600/20">
             <FiLogIn className="w-8 h-8" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Welcome Back</h1>
-          <p className="text-gray-500 mt-2">Sign in to your account to continue</p>
+          <h1 className="text-2xl font-bold text-white">Welcome Back</h1>
+          <p className="text-blue-200 mt-2">Sign in to your account to continue</p>
         </div>
 
         {loginError && (
-          <div className="mb-6 p-4 bg-red-50 text-red-700 rounded-lg border border-red-200 flex items-center">
+          <div className="mb-6 p-4 bg-red-900/30 text-red-300 rounded-lg border border-red-800/50 flex items-center backdrop-blur-sm">
             <FiAlertCircle className="w-5 h-5 mr-2 flex-shrink-0" />
             <span>{loginError}</span>
           </div>
@@ -80,12 +87,12 @@ const Login = () => {
 
         <form onSubmit={onSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="email">
+            <label className="block text-sm font-medium text-blue-200 mb-1" htmlFor="email">
               Email Address
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FiMail className="h-5 w-5 text-gray-400" />
+                <FiMail className="h-5 w-5 text-blue-400" />
               </div>
               <input
                 type="email"
@@ -93,7 +100,7 @@ const Login = () => {
                 name="email"
                 value={email}
                 onChange={onChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 pl-10"
+                className="w-full px-3 py-2 border border-blue-800/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-10 bg-blue-900/30 text-white placeholder-blue-300/50"
                 placeholder="you@example.com"
                 required
               />
@@ -102,18 +109,18 @@ const Login = () => {
 
           <div>
             <div className="flex items-center justify-between">
-              <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="password">
+              <label className="block text-sm font-medium text-blue-200 mb-1" htmlFor="password">
                 Password
               </label>
               <div className="text-sm">
-                <a href="#" className="text-indigo-600 hover:text-indigo-500">
+                <a href="#" className="text-blue-400 hover:text-blue-300">
                   Forgot password?
                 </a>
               </div>
             </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FiLock className="h-5 w-5 text-gray-400" />
+                <FiLock className="h-5 w-5 text-blue-400" />
               </div>
               <input
                 type="password"
@@ -121,7 +128,7 @@ const Login = () => {
                 name="password"
                 value={password}
                 onChange={onChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 pl-10"
+                className="w-full px-3 py-2 border border-blue-800/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pl-10 bg-blue-900/30 text-white placeholder-blue-300/50"
                 placeholder="••••••••"
                 required
               />
@@ -131,7 +138,7 @@ const Login = () => {
           <div>
             <button
               type="submit"
-              className="px-4 py-2.5 rounded-md font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500 w-full flex justify-center items-center"
+              className="px-4 py-2.5 rounded-md font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 w-full flex justify-center items-center shadow-lg shadow-blue-600/20"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -152,18 +159,18 @@ const Login = () => {
         </form>
 
         <div className="mt-8 text-center">
-          <p className="text-gray-600">
+          <p className="text-blue-200">
             Don't have an account?{' '}
-            <Link to="/register" className="text-indigo-600 hover:text-indigo-500 font-medium">
+            <Link to="/register" className="text-blue-400 hover:text-blue-300 font-medium">
               Create an account
             </Link>
           </p>
         </div>
 
-        <div className="mt-6 border-t border-gray-200 pt-4">
-          <div className="text-center text-xs text-gray-500">
+        <div className="mt-6 border-t border-blue-800/30 pt-4">
+          <div className="text-center text-xs text-blue-300">
             <p>Demo Admin Account:</p>
-            <p className="font-mono bg-gray-50 p-2 rounded mt-1">admin@example.com / password123</p>
+            <p className="font-mono bg-blue-900/30 p-2 rounded mt-1 text-blue-200 border border-blue-800/30">admin@example.com / password123</p>
           </div>
         </div>
       </div>

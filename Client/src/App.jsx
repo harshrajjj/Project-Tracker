@@ -15,6 +15,7 @@ import NotFound from './pages/NotFound'
 
 // Components
 import Header from './components/layout/Header'
+import Footer from './components/layout/Footer'
 import PrivateRoute from './components/routing/PrivateRoute'
 import ErrorBoundary from './components/common/ErrorBoundary'
 
@@ -25,10 +26,15 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen text-white relative overflow-hidden flex flex-col">
+          <div className="animated-gradient">
+            <div className="pulse-1"></div>
+            <div className="pulse-2"></div>
+            <div className="pulse-3"></div>
+          </div>
           <ErrorBoundary>
             <Header />
-            <main className="py-8">
+            <main className="pt-24 pb-8 relative z-10 flex-grow">
               <ToastContainer position="top-right" autoClose={3000} />
             <Routes>
               <Route path="/" element={<ErrorBoundary><Home /></ErrorBoundary>} />
@@ -53,6 +59,7 @@ function App() {
               <Route path="*" element={<ErrorBoundary><NotFound /></ErrorBoundary>} />
             </Routes>
             </main>
+            <Footer />
           </ErrorBoundary>
         </div>
       </Router>
