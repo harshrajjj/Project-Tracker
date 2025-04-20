@@ -1,5 +1,7 @@
 import { createContext, useState, useEffect } from 'react';
-import axios from '../utils/axiosConfig';
+import axiosInstance from '../utils/axiosConfig';
+
+// Use axiosInstance instead of axios throughout this file
 // import { toast } from 'react-toastify';
 
 const AuthContext = createContext();
@@ -14,10 +16,10 @@ export const AuthProvider = ({ children }) => {
   const setToken = (token) => {
     if (token) {
       localStorage.setItem('token', token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     } else {
       localStorage.removeItem('token');
-      delete axios.defaults.headers.common['Authorization'];
+      delete axiosInstance.defaults.headers.common['Authorization'];
     }
   };
 
@@ -37,10 +39,10 @@ export const AuthProvider = ({ children }) => {
         }
 
         // Set the token in axios headers
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         console.log('Token found in localStorage, attempting to verify');
 
-        const res = await axios.get('/auth/me');
+        const res = await axiosInstance.get('/auth/me');
         console.log('User loaded successfully:', res.data);
 
         setUser(res.data.data);
@@ -63,7 +65,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       console.log('AuthContext: Manually loading user data');
-      const res = await axios.get('/auth/me');
+      const res = await axiosInstance.get('/auth/me');
       console.log('User data loaded manually:', res.data);
 
       if (res.data && res.data.data) {
@@ -88,7 +90,7 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     try {
       console.log('AuthContext: Registering user with data:', { ...userData, password: '***' });
-      const res = await axios.post('/auth/register', userData);
+      const res = await axiosInstance.post('/auth/register', userData);
       console.log('AuthContext: Registration response:', res.data);
 
       if (res.data && res.data.user) {
@@ -118,7 +120,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (userData) => {
     try {
       console.log('AuthContext: Logging in user with email:', userData.email);
-      const res = await axios.post('/auth/login', userData);
+      const res = await axiosInstance.post('/auth/login', userData);
       console.log('AuthContext: Login response:', res.data);
 
       if (res.data && res.data.user) {
@@ -154,7 +156,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       console.log('AuthContext: Logging out user');
-      await axios.get('/auth/logout');
+      await axiosInstance.get('/auth/logout');
 
       // Clear token from localStorage and axios headers
       setToken(null);
