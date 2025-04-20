@@ -16,6 +16,11 @@ if (isProduction) {
     apiBaseURL = 'https://projecttaskr-backend.onrender.com/api';
   }
 
+  // Make sure the URL includes the /api prefix
+  if (!apiBaseURL.includes('/api')) {
+    apiBaseURL = apiBaseURL + '/api';
+  }
+
   // Remove trailing slash if present
   if (apiBaseURL.endsWith('/')) {
     apiBaseURL = apiBaseURL.slice(0, -1);

@@ -40,7 +40,7 @@ app.use(cookieParser());
 // CORS configuration
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production'
-    ? [process.env.CLIENT_URL, 'https://project-tracker-iota.vercel.app'] // Allow Vercel domain
+    ? ['https://project-tracker-iota.vercel.app', 'https://project-tracker-coyuius0v-harshs-projects-abc9a55a.vercel.app', process.env.CLIENT_URL] // Allow all Vercel domains
     : [process.env.CLIENT_URL, 'http://localhost:5173'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -48,6 +48,10 @@ const corsOptions = {
   exposedHeaders: ['Content-Length', 'Authorization']
 };
 
+// If you're still having CORS issues, uncomment this line to allow all origins
+// app.use(cors({ origin: '*', credentials: false }));
+
+// Use the configured CORS options
 app.use(cors(corsOptions));
 console.log('CORS configured with options:', corsOptions);
 
