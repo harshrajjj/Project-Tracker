@@ -92,17 +92,11 @@ export const AuthProvider = ({ children }) => {
       console.log('AuthContext: Registration response:', res.data);
 
       if (res.data && res.data.user) {
-        // Save token to localStorage and set in axios headers
-        if (res.data.token) {
-          console.log('Setting token in localStorage');
-          setToken(res.data.token);
+        // Don't automatically log in after registration
+        console.log('Registration successful, but not automatically logging in');
 
-          // Wait a moment for the token to be set
-          await new Promise(resolve => setTimeout(resolve, 300));
-
-          // Load user data to ensure authentication state is updated
-          await loadUserData();
-        }
+        // Don't set token or load user data
+        // This ensures the user needs to explicitly log in after registration
 
         setError(null);
         return { ...res.data, success: true };

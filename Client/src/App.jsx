@@ -26,16 +26,22 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen text-white relative overflow-hidden flex flex-col">
-          <div className="animated-gradient">
-            <div className="pulse-1"></div>
-            <div className="pulse-2"></div>
-            <div className="pulse-3"></div>
-          </div>
+        <div className="min-h-screen text-white relative overflow-hidden flex flex-col animated-gradient">
+          <div className="pulse-1"></div>
+          <div className="pulse-2"></div>
+          <div className="pulse-3"></div>
           <ErrorBoundary>
             <Header />
             <main className="pt-24 pb-8 relative z-10 flex-grow">
-              <ToastContainer position="top-right" autoClose={3000} />
+              <ToastContainer
+                position="top-right"
+                autoClose={3000}
+                closeOnClick
+                pauseOnHover
+                draggable
+                className="toast-container-custom"
+                style={{ top: '4.5rem' }}
+              />
             <Routes>
               <Route path="/" element={<ErrorBoundary><Home /></ErrorBoundary>} />
               <Route path="/login" element={<ErrorBoundary><Login /></ErrorBoundary>} />

@@ -113,7 +113,9 @@ const Header = () => {
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
               <div className="flex-shrink-0 flex items-center">
-                <div className="h-8 w-8 bg-blue-500 rounded-md flex items-center justify-center text-white font-bold mr-2 shadow-lg shadow-blue-500/20">PT</div>
+                <div className="h-8 w-8 bg-blue-500 rounded-md flex items-center justify-center text-white font-bold mr-2 shadow-lg shadow-blue-500/20 overflow-hidden">
+                  <img src="/logo.svg" alt="ProjectTaskr Logo" className="w-full h-full object-cover" />
+                </div>
                 <span className="text-xl font-bold text-white">ProjectTaskr</span>
               </div>
             </Link>

@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AuthContext from '../context/AuthContext';
 import { FiUser, FiMail, FiLock, FiUserPlus, FiAlertCircle } from 'react-icons/fi';
 
@@ -63,11 +63,14 @@ const Register = () => {
       setIsLoading(false);
 
       if (result && result.success) {
-        console.log('Registration successful, redirecting to dashboard');
+        console.log('Registration successful, redirecting to login page');
+
+        // Show success toast
+        toast.success('Account created successfully! Please log in.');
 
         // Wait a moment before redirecting
         setTimeout(() => {
-          navigate('/dashboard');
+          navigate('/login');
         }, 500);
       } else {
         setRegisterError(result?.error || 'Registration failed');

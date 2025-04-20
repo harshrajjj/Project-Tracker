@@ -51,11 +51,11 @@ const Login = () => {
       setIsLoading(false);
 
       if (result && result.success) {
-        console.log('Login successful, redirecting to dashboard');
+        console.log('Login successful, redirecting to home page');
 
         // Wait a moment before redirecting
         setTimeout(() => {
-          navigate('/dashboard');
+          navigate('/');
         }, 500);
       } else {
         setLoginError(result?.error || 'Login failed');

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from '../utils/axiosConfig';
 import AuthContext from '../context/AuthContext';
+import { FiArrowLeft, FiEdit2, FiTrash2, FiPlus, FiFilter, FiCheck, FiX, FiAlertCircle, FiList, FiCalendar, FiClock, FiFlag, FiUser } from 'react-icons/fi';
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -268,46 +269,46 @@ const ProjectDetails = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="flex flex-col justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-400 mb-4"></div>
+        <p className="text-blue-400">Loading project details...</p>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 page-transition">
       <div className="mb-8">
         <button
           onClick={() => navigate('/dashboard')}
-          className="text-blue-500 hover:text-blue-700 mb-4 flex items-center"
+          className="text-blue-300 hover:text-blue-100 mb-6 flex items-center transition-colors"
         >
-          <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-          </svg>
+          <FiArrowLeft className="w-4 h-4 mr-2" />
           Back to Dashboard
         </button>
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <div className="flex justify-between items-start">
+        <div className="bg-blue-950/30 backdrop-blur-sm p-6 rounded-xl shadow-md border border-blue-800/30">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-4">
             <div>
-              <h1 className="text-3xl font-bold mb-2">{project.name}</h1>
-              <p className="text-gray-600 mb-4">{project.description}</p>
-              <div className="text-sm text-gray-500">
+              <h1 className="text-2xl md:text-3xl font-bold mb-2 text-white">{project.name}</h1>
+              <p className="text-blue-200 mb-4">{project.description}</p>
+              <div className="flex items-center text-sm text-blue-300">
+                <FiCalendar className="mr-2" />
                 Created on {new Date(project.createdAt).toLocaleDateString()}
               </div>
             </div>
             {isAdmin && (
-              <div className="flex space-x-2">
+              <div className="flex space-x-3">
                 <button
                   onClick={openEditForm}
-                  className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded text-sm"
+                  className="flex items-center px-3 py-1.5 rounded-md text-sm bg-yellow-600/70 hover:bg-yellow-600 text-white transition-colors"
                 >
-                  Edit
+                  <FiEdit2 className="mr-1.5" /> Edit
                 </button>
                 <button
                   onClick={() => setShowDeleteConfirm(true)}
-                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm"
+                  className="flex items-center px-3 py-1.5 rounded-md text-sm bg-red-600/70 hover:bg-red-600 text-white transition-colors"
                 >
-                  Delete
+                  <FiTrash2 className="mr-1.5" /> Delete
                 </button>
               </div>
             )}
@@ -316,11 +317,14 @@ const ProjectDetails = () => {
 
         {/* Edit Project Form */}
         {showEditForm && (
-          <div className="bg-white p-6 rounded-lg shadow-md mt-4">
-            <h2 className="text-xl font-semibold mb-4">Edit Project</h2>
-            <form onSubmit={handleEditProject}>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="edit-name">
+          <div className="bg-blue-950/30 backdrop-blur-sm p-6 rounded-xl shadow-md mt-6 border border-blue-800/30">
+            <div className="flex items-center mb-6">
+              <FiEdit2 className="text-blue-400 mr-2" />
+              <h2 className="text-xl font-semibold text-white">Edit Project</h2>
+            </div>
+            <form onSubmit={handleEditProject} className="space-y-4">
+              <div>
+                <label className="block text-blue-200 text-sm font-medium mb-2" htmlFor="edit-name">
                   Project Name
                 </label>
                 <input
@@ -329,12 +333,12 @@ const ProjectDetails = () => {
                   name="name"
                   value={editProject.name}
                   onChange={handleEditChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="w-full px-3 py-2 border border-blue-800/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-blue-900/30 text-white placeholder-blue-300/50"
                   required
                 />
               </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="edit-description">
+              <div>
+                <label className="block text-blue-200 text-sm font-medium mb-2" htmlFor="edit-description">
                   Description
                 </label>
                 <textarea
@@ -342,24 +346,24 @@ const ProjectDetails = () => {
                   name="description"
                   value={editProject.description}
                   onChange={handleEditChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="w-full px-3 py-2 border border-blue-800/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-blue-900/30 text-white placeholder-blue-300/50"
                   rows="3"
                   required
                 ></textarea>
               </div>
-              <div className="flex space-x-2">
+              <div className="flex space-x-3 pt-2">
                 <button
                   type="submit"
-                  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+                  className="flex items-center px-4 py-2 rounded-md font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-green-600/70 text-white hover:bg-green-600 focus:ring-green-500"
                 >
-                  Save Changes
+                  <FiCheck className="mr-2" /> Save Changes
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowEditForm(false)}
-                  className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
+                  className="flex items-center px-4 py-2 rounded-md font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-blue-800/50 text-white hover:bg-blue-800 focus:ring-blue-500"
                 >
-                  Cancel
+                  <FiX className="mr-2" /> Cancel
                 </button>
               </div>
             </form>
@@ -368,22 +372,25 @@ const ProjectDetails = () => {
 
         {/* Delete Confirmation Modal */}
         {showDeleteConfirm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-              <h2 className="text-xl font-bold mb-4 text-red-600">Delete Project</h2>
-              <p className="mb-6">Are you sure you want to delete this project? This action cannot be undone and will also delete all tasks associated with this project.</p>
-              <div className="flex justify-end space-x-2">
+          <div className="fixed inset-0 bg-blue-950/80 backdrop-blur-sm flex items-center justify-center z-50">
+            <div className="bg-blue-900/70 p-6 rounded-xl shadow-lg max-w-md w-full border border-blue-700/50">
+              <div className="flex items-center mb-4 text-red-400">
+                <FiAlertCircle className="w-6 h-6 mr-2" />
+                <h2 className="text-xl font-bold">Delete Project</h2>
+              </div>
+              <p className="mb-6 text-blue-200">Are you sure you want to delete this project? This action cannot be undone and will also delete all tasks associated with this project.</p>
+              <div className="flex justify-end space-x-3">
                 <button
                   onClick={() => setShowDeleteConfirm(false)}
-                  className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
+                  className="px-4 py-2 rounded-md bg-blue-800/70 hover:bg-blue-800 text-white transition-colors flex items-center"
                 >
-                  Cancel
+                  <FiX className="mr-2" /> Cancel
                 </button>
                 <button
                   onClick={handleDeleteProject}
-                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                  className="px-4 py-2 rounded-md bg-red-600/70 hover:bg-red-600 text-white transition-colors flex items-center"
                 >
-                  Delete
+                  <FiTrash2 className="mr-2" /> Delete
                 </button>
               </div>
             </div>
@@ -391,27 +398,41 @@ const ProjectDetails = () => {
         )}
       </div>
 
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Tasks</h2>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+        <div className="flex items-center">
+          <FiList className="text-blue-400 mr-3 text-xl" />
+          <h2 className="text-2xl font-bold text-white">Tasks</h2>
+        </div>
         <div className="flex space-x-4">
           {isAdmin && (
             <button
               onClick={() => setShowCreateForm(!showCreateForm)}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+              className={`px-4 py-2 rounded-md font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 flex items-center ${showCreateForm ? 'bg-blue-800/50 text-white hover:bg-blue-700/50 focus:ring-blue-500' : 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 shadow-lg shadow-blue-600/20'}`}
             >
-              {showCreateForm ? 'Cancel' : 'Add Task'}
+              {showCreateForm ? (
+                <>
+                  <FiX className="mr-2" /> Cancel
+                </>
+              ) : (
+                <>
+                  <FiPlus className="mr-2" /> Add Task
+                </>
+              )}
             </button>
           )}
         </div>
       </div>
 
       {showCreateForm && (
-        <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-          <h3 className="text-xl font-semibold mb-4">Create New Task</h3>
+        <div className="bg-blue-950/30 backdrop-blur-sm p-6 rounded-xl shadow-md mb-8 border border-blue-800/30">
+          <div className="flex items-center mb-6">
+            <FiPlus className="text-blue-400 mr-2" />
+            <h3 className="text-xl font-semibold text-white">Create New Task</h3>
+          </div>
           <form onSubmit={handleCreateTask}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-blue-200 text-sm font-medium mb-2" htmlFor="title">
                   Task Title
                 </label>
                 <input
@@ -420,65 +441,71 @@ const ProjectDetails = () => {
                   name="title"
                   value={newTask.title}
                   onChange={handleChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  placeholder="Task Title"
+                  className="w-full px-3 py-2 border border-blue-800/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-blue-900/30 text-white placeholder-blue-300/50"
+                  placeholder="Enter task title"
                   required
                 />
               </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="assignedTo">
-                  Assign To
+              <div>
+                <label className="block text-blue-200 text-sm font-medium mb-2" htmlFor="assignedTo">
+                  <div className="flex items-center">
+                    <FiUser className="mr-1" /> Assign To
+                  </div>
                 </label>
                 <select
                   id="assignedTo"
                   name="assignedTo"
                   value={newTask.assignedTo}
                   onChange={handleChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="w-full px-3 py-2 border border-blue-800/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-blue-900/30 text-white"
                   required
                 >
-                  <option value="">Select User</option>
+                  <option value="" className="bg-blue-950">Select User</option>
                   {users.map(user => (
-                    <option key={user._id} value={user._id}>
+                    <option key={user._id} value={user._id} className="bg-blue-950">
                       {user.name}
                     </option>
                   ))}
                 </select>
               </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="priority">
-                  Priority
+              <div>
+                <label className="block text-blue-200 text-sm font-medium mb-2" htmlFor="priority">
+                  <div className="flex items-center">
+                    <FiFlag className="mr-1" /> Priority
+                  </div>
                 </label>
                 <select
                   id="priority"
                   name="priority"
                   value={newTask.priority}
                   onChange={handleChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="w-full px-3 py-2 border border-blue-800/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-blue-900/30 text-white"
                 >
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="High">High</option>
+                  <option value="Low" className="bg-blue-950 text-green-300">Low</option>
+                  <option value="Medium" className="bg-blue-950 text-yellow-300">Medium</option>
+                  <option value="High" className="bg-blue-950 text-red-300">High</option>
                 </select>
               </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="status">
-                  Status
+              <div>
+                <label className="block text-blue-200 text-sm font-medium mb-2" htmlFor="status">
+                  <div className="flex items-center">
+                    <FiClock className="mr-1" /> Status
+                  </div>
                 </label>
                 <select
                   id="status"
                   name="status"
                   value={newTask.status}
                   onChange={handleChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="w-full px-3 py-2 border border-blue-800/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-blue-900/30 text-white"
                 >
-                  <option value="Pending">Pending</option>
-                  <option value="In Progress">In Progress</option>
-                  <option value="Done">Done</option>
+                  <option value="Pending" className="bg-blue-950 text-gray-300">Pending</option>
+                  <option value="In Progress" className="bg-blue-950 text-blue-300">In Progress</option>
+                  <option value="Done" className="bg-blue-950 text-green-300">Done</option>
                 </select>
               </div>
-              <div className="mb-4 md:col-span-2">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
+              <div className="md:col-span-2">
+                <label className="block text-blue-200 text-sm font-medium mb-2" htmlFor="description">
                   Description
                 </label>
                 <textarea
@@ -486,72 +513,81 @@ const ProjectDetails = () => {
                   name="description"
                   value={newTask.description}
                   onChange={handleChange}
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  placeholder="Task Description"
+                  className="w-full px-3 py-2 border border-blue-800/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-blue-900/30 text-white placeholder-blue-300/50"
+                  placeholder="Describe the task in detail"
                   rows="3"
                   required
                 ></textarea>
               </div>
             </div>
-            <button
-              type="submit"
-              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
-            >
-              Create Task
-            </button>
+            <div className="mt-6">
+              <button
+                type="submit"
+                className="px-4 py-2 rounded-md font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-green-600/70 text-white hover:bg-green-600 focus:ring-green-500 flex items-center shadow-lg shadow-green-600/20"
+              >
+                <FiPlus className="mr-2" /> Create Task
+              </button>
+            </div>
           </form>
         </div>
       )}
 
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-          <div className="flex space-x-4 mb-4 md:mb-0">
+      <div className="bg-blue-950/30 backdrop-blur-sm rounded-xl shadow-md p-6 border border-blue-800/30">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+          <div className="flex space-x-3 mb-4 md:mb-0">
             <button
               onClick={() => setFilter('all')}
-              className={`px-3 py-1 rounded ${
+              className={`px-3 py-1.5 rounded-md flex items-center text-sm font-medium transition-colors ${
                 filter === 'all'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  ? 'bg-blue-600/70 text-white'
+                  : 'bg-blue-900/50 text-blue-300 hover:bg-blue-800/50 hover:text-blue-200'
               }`}
             >
-              All Tasks
+              <FiList className="mr-1.5" /> All Tasks
             </button>
             <button
               onClick={() => setFilter('me')}
-              className={`px-3 py-1 rounded ${
+              className={`px-3 py-1.5 rounded-md flex items-center text-sm font-medium transition-colors ${
                 filter === 'me'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  ? 'bg-blue-600/70 text-white'
+                  : 'bg-blue-900/50 text-blue-300 hover:bg-blue-800/50 hover:text-blue-200'
               }`}
             >
-              My Tasks
+              <FiUser className="mr-1.5" /> My Tasks
             </button>
           </div>
           <div className="flex items-center">
-            <span className="mr-2 text-sm text-gray-600">Sort by:</span>
+            <span className="mr-2 text-sm text-blue-300 flex items-center">
+              <FiFilter className="mr-1.5" /> Sort by:
+            </span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="border rounded py-1 px-2 text-sm"
+              className="border border-blue-800/50 rounded-md py-1.5 px-3 text-sm bg-blue-900/30 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
-              <option value="priority">Priority</option>
-              <option value="status">Status</option>
-              <option value="createdAt">Date Created</option>
+              <option value="priority" className="bg-blue-950">Priority</option>
+              <option value="status" className="bg-blue-950">Status</option>
+              <option value="createdAt" className="bg-blue-950">Date Created</option>
             </select>
           </div>
         </div>
 
         {sortedTasks.length === 0 ? (
-          <p className="text-gray-500">No tasks found.</p>
+          <div className="text-center py-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-900/30 text-blue-400 mb-4">
+              <FiList className="w-8 h-8" />
+            </div>
+            <p className="text-blue-300">No tasks found. {isAdmin && 'Create a new task to get started!'}</p>
+          </div>
         ) : (
           <div className="space-y-4">
             {sortedTasks.map((task) => (
-              <div key={task._id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+              <div key={task._id} className="border border-blue-800/30 rounded-lg p-4 hover:shadow-md transition-shadow bg-blue-900/20 backdrop-blur-sm">
                 {editingTask && editingTask._id === task._id ? (
                   <form onSubmit={handleEditTaskSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="edit-title">
+                        <label className="block text-blue-200 text-sm font-medium mb-2" htmlFor="edit-title">
                           Task Title
                         </label>
                         <input
@@ -560,64 +596,70 @@ const ProjectDetails = () => {
                           name="title"
                           value={editingTask.title}
                           onChange={handleEditTaskChange}
-                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          className="w-full px-3 py-2 border border-blue-800/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-blue-900/30 text-white placeholder-blue-300/50"
                           required
                         />
                       </div>
                       <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="edit-assignedTo">
-                          Assign To
+                        <label className="block text-blue-200 text-sm font-medium mb-2" htmlFor="edit-assignedTo">
+                          <div className="flex items-center">
+                            <FiUser className="mr-1" /> Assign To
+                          </div>
                         </label>
                         <select
                           id="edit-assignedTo"
                           name="assignedTo"
                           value={editingTask.assignedTo}
                           onChange={handleEditTaskChange}
-                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          className="w-full px-3 py-2 border border-blue-800/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-blue-900/30 text-white"
                           required
                         >
                           {users.map(user => (
-                            <option key={user._id} value={user._id}>
+                            <option key={user._id} value={user._id} className="bg-blue-950">
                               {user.name}
                             </option>
                           ))}
                         </select>
                       </div>
                       <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="edit-priority">
-                          Priority
+                        <label className="block text-blue-200 text-sm font-medium mb-2" htmlFor="edit-priority">
+                          <div className="flex items-center">
+                            <FiFlag className="mr-1" /> Priority
+                          </div>
                         </label>
                         <select
                           id="edit-priority"
                           name="priority"
                           value={editingTask.priority}
                           onChange={handleEditTaskChange}
-                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          className="w-full px-3 py-2 border border-blue-800/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-blue-900/30 text-white"
                         >
-                          <option value="Low">Low</option>
-                          <option value="Medium">Medium</option>
-                          <option value="High">High</option>
+                          <option value="Low" className="bg-blue-950 text-green-300">Low</option>
+                          <option value="Medium" className="bg-blue-950 text-yellow-300">Medium</option>
+                          <option value="High" className="bg-blue-950 text-red-300">High</option>
                         </select>
                       </div>
                       <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="edit-status">
-                          Status
+                        <label className="block text-blue-200 text-sm font-medium mb-2" htmlFor="edit-status">
+                          <div className="flex items-center">
+                            <FiClock className="mr-1" /> Status
+                          </div>
                         </label>
                         <select
                           id="edit-status"
                           name="status"
                           value={editingTask.status}
                           onChange={handleEditTaskChange}
-                          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                          className="w-full px-3 py-2 border border-blue-800/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-blue-900/30 text-white"
                         >
-                          <option value="Pending">Pending</option>
-                          <option value="In Progress">In Progress</option>
-                          <option value="Done">Done</option>
+                          <option value="Pending" className="bg-blue-950 text-gray-300">Pending</option>
+                          <option value="In Progress" className="bg-blue-950 text-blue-300">In Progress</option>
+                          <option value="Done" className="bg-blue-950 text-green-300">Done</option>
                         </select>
                       </div>
                     </div>
                     <div>
-                      <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="edit-description">
+                      <label className="block text-blue-200 text-sm font-medium mb-2" htmlFor="edit-description">
                         Description
                       </label>
                       <textarea
@@ -625,24 +667,24 @@ const ProjectDetails = () => {
                         name="description"
                         value={editingTask.description}
                         onChange={handleEditTaskChange}
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="w-full px-3 py-2 border border-blue-800/50 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-blue-900/30 text-white placeholder-blue-300/50"
                         rows="3"
                         required
                       ></textarea>
                     </div>
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-3">
                       <button
                         type="submit"
-                        className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-sm"
+                        className="flex items-center px-3 py-1.5 rounded-md text-sm bg-green-600/70 hover:bg-green-600 text-white transition-colors"
                       >
-                        Save Changes
+                        <FiCheck className="mr-1.5" /> Save Changes
                       </button>
                       <button
                         type="button"
                         onClick={cancelEditTask}
-                        className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm"
+                        className="flex items-center px-3 py-1.5 rounded-md text-sm bg-blue-800/50 hover:bg-blue-800 text-white transition-colors"
                       >
-                        Cancel
+                        <FiX className="mr-1.5" /> Cancel
                       </button>
                     </div>
                   </form>
@@ -650,62 +692,64 @@ const ProjectDetails = () => {
                   <>
                     <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="text-lg font-semibold">{task.title}</h3>
-                        <p className="text-gray-600 mt-1">{task.description}</p>
+                        <h3 className="text-lg font-semibold text-white">{task.title}</h3>
+                        <p className="text-blue-200 mt-1">{task.description}</p>
                       </div>
                       <div className="flex flex-col items-end">
-                        <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                          task.priority === 'High' ? 'bg-red-100 text-red-800' :
-                          task.priority === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
-                          'bg-green-100 text-green-800'
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          task.priority === 'High' ? 'bg-red-900/30 text-red-300 border border-red-800/30' :
+                          task.priority === 'Medium' ? 'bg-yellow-900/30 text-yellow-300 border border-yellow-800/30' :
+                          'bg-green-900/30 text-green-300 border border-green-800/30'
                         }`}>
                           {task.priority}
                         </span>
-                        <span className="text-sm text-gray-500 mt-1">
-                          Assigned to: {task.assignedTo.name}
+                        <span className="text-sm text-blue-300 mt-2 flex items-center">
+                          <FiUser className="mr-1.5 text-xs" /> {task.assignedTo.name}
                         </span>
                       </div>
                     </div>
-                    <div className="mt-4 flex justify-between items-center">
+                    <div className="mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                       <div className="flex items-center">
-                        <span className="text-sm text-gray-500 mr-2">Status:</span>
+                        <span className="text-sm text-blue-300 mr-2 flex items-center">
+                          <FiClock className="mr-1.5" /> Status:
+                        </span>
                         <select
                           value={task.status}
                           onChange={(e) => handleTaskStatusChange(task._id, e.target.value)}
-                          className={`text-sm border rounded py-1 px-2 ${
-                            task.status === 'Pending' ? 'bg-gray-100' :
-                            task.status === 'In Progress' ? 'bg-blue-100' :
-                            'bg-green-100'
+                          className={`text-sm border rounded-md py-1.5 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                            task.status === 'Pending' ? 'bg-gray-900/30 text-gray-300 border-gray-700' :
+                            task.status === 'In Progress' ? 'bg-blue-900/30 text-blue-300 border-blue-700' :
+                            'bg-green-900/30 text-green-300 border-green-700'
                           }`}
                           disabled={task.assignedTo?._id !== user?.id && !isAdmin}
                         >
-                          <option value="Pending">Pending</option>
-                          <option value="In Progress">In Progress</option>
-                          <option value="Done">Done</option>
+                          <option value="Pending" className="bg-blue-950 text-gray-300">Pending</option>
+                          <option value="In Progress" className="bg-blue-950 text-blue-300">In Progress</option>
+                          <option value="Done" className="bg-blue-950 text-green-300">Done</option>
                         </select>
                       </div>
-                      <div className="flex space-x-2">
+                      <div className="flex space-x-3">
                         {(isAdmin || task.assignedTo?._id === user?.id) && (
                           <>
                             <button
                               onClick={() => startEditTask(task)}
-                              className="text-yellow-500 hover:text-yellow-700 text-sm"
+                              className="flex items-center px-2.5 py-1 rounded-md text-xs bg-yellow-600/50 hover:bg-yellow-600/70 text-white transition-colors"
                             >
-                              Edit
+                              <FiEdit2 className="mr-1" /> Edit
                             </button>
                             <button
                               onClick={() => confirmDeleteTask(task)}
-                              className="text-red-500 hover:text-red-700 text-sm"
+                              className="flex items-center px-2.5 py-1 rounded-md text-xs bg-red-600/50 hover:bg-red-600/70 text-white transition-colors"
                             >
-                              Delete
+                              <FiTrash2 className="mr-1" /> Delete
                             </button>
                           </>
                         )}
                         <button
                           onClick={() => navigate(`/tasks/${task._id}`)}
-                          className="text-blue-500 hover:text-blue-700 text-sm"
+                          className="flex items-center px-2.5 py-1 rounded-md text-xs bg-blue-600/50 hover:bg-blue-600/70 text-white transition-colors"
                         >
-                          View Details & Comments
+                          <FiList className="mr-1" /> View Details
                         </button>
                       </div>
                     </div>
@@ -719,25 +763,28 @@ const ProjectDetails = () => {
 
       {/* Task Delete Confirmation Modal */}
       {showTaskDeleteConfirm && taskToDelete && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-            <h2 className="text-xl font-bold mb-4 text-red-600">Delete Task</h2>
-            <p className="mb-6">Are you sure you want to delete the task "{taskToDelete.title}"? This action cannot be undone.</p>
-            <div className="flex justify-end space-x-2">
+        <div className="fixed inset-0 bg-blue-950/80 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-blue-900/70 p-6 rounded-xl shadow-lg max-w-md w-full border border-blue-700/50">
+            <div className="flex items-center mb-4 text-red-400">
+              <FiAlertCircle className="w-6 h-6 mr-2" />
+              <h2 className="text-xl font-bold">Delete Task</h2>
+            </div>
+            <p className="mb-6 text-blue-200">Are you sure you want to delete the task "{taskToDelete.title}"? This action cannot be undone.</p>
+            <div className="flex justify-end space-x-3">
               <button
                 onClick={() => {
                   setShowTaskDeleteConfirm(false);
                   setTaskToDelete(null);
                 }}
-                className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded"
+                className="px-4 py-2 rounded-md bg-blue-800/70 hover:bg-blue-800 text-white transition-colors flex items-center"
               >
-                Cancel
+                <FiX className="mr-2" /> Cancel
               </button>
               <button
                 onClick={handleDeleteTask}
-                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                className="px-4 py-2 rounded-md bg-red-600/70 hover:bg-red-600 text-white transition-colors flex items-center"
               >
-                Delete
+                <FiTrash2 className="mr-2" /> Delete
               </button>
             </div>
           </div>
