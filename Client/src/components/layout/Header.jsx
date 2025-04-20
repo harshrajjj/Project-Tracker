@@ -13,9 +13,24 @@ const Header = () => {
     setMobileMenuOpen(false);
   }, [location]);
 
-  const handleLogout = () => {
-    logout();
-    setMobileMenuOpen(false);
+  const handleLogout = async () => {
+    try {
+      // Show loading state or feedback if needed
+
+      // Call logout function
+      await logout();
+
+      // Close mobile menu
+      setMobileMenuOpen(false);
+
+      // Redirect to home page if needed
+      // You can uncomment this if you want to redirect after logout
+      // window.location.href = '/';
+    } catch (error) {
+      console.error('Error during logout:', error);
+      // Even if there's an error, we still want to close the mobile menu
+      setMobileMenuOpen(false);
+    }
   };
 
   const isActive = (path) => {

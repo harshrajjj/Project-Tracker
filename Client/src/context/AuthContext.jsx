@@ -158,18 +158,24 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       console.log('AuthContext: Logging out user');
-      await axiosInstance.get('/auth/logout');
 
+      // Try to call the logout endpoint, but don't wait for it to complete
+      // This prevents the 404 error from blocking the logout process
+      axiosInstance.get('/auth/logout')
+        .then(() => console.log('Logout API call successful'))
+        .catch(error => console.log('Logout API call failed, but continuing with client-side logout:', error.message));
+
+      // Immediately clear client-side auth state
       // Clear token from localStorage and axios headers
       setToken(null);
-
       setUser(null);
       setIsAuthenticated(false);
       setError(null);
-      console.log('AuthContext: User logged out successfully');
+
+      console.log('AuthContext: User logged out successfully on client side');
     } catch (err) {
       console.error('AuthContext: Logout error:', err);
-      // Even if the server request fails, clear everything on the client side
+      // Even if there's an error, clear everything on the client side
       setToken(null);
       setUser(null);
       setIsAuthenticated(false);
