@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:vercel": "VITE_API_URL=https://projecttaskr-backend.onrender.com/api vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

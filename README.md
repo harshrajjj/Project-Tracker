@@ -146,9 +146,9 @@ Or register a new account through the application's registration page (all new r
 
 ## Deployment
 
-### Deploying to Render
+### Deployment Options
 
-#### Backend Deployment
+#### Backend Deployment on Render
 
 1. Create a new Web Service on Render
    - Connect your GitHub repository
@@ -163,31 +163,46 @@ Or register a new account through the application's registration page (all new r
    MONGO_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret_key
    JWT_EXPIRE=30d
-   CLIENT_URL=https://your-frontend-url.onrender.com
+   CLIENT_URL=https://your-frontend-url.vercel.app
    NODE_ENV=production
    ```
 
 3. Deploy the service
 
-#### Frontend Deployment
+#### Frontend Deployment on Vercel
 
 1. Create a `.env.production` file in the Client directory with:
    ```
    VITE_API_URL=https://your-backend-url.onrender.com/api
    ```
 
-2. Create a new Static Site on Render
-   - Connect your GitHub repository
-   - Set the Root Directory to `Client`
-   - Set the Build Command to `npm install && npm run build`
-   - Set the Publish Directory to `dist`
+2. Update the `vercel.json` file in the Client directory with your actual backend URL:
+   ```json
+   {
+     "rewrites": [
+       { "source": "/api/:path*", "destination": "https://your-backend-url.onrender.com/api/:path*" }
+     ],
+     "env": {
+       "VITE_API_URL": "https://your-backend-url.onrender.com/api"
+     },
+     "buildCommand": "npm run build",
+     "outputDirectory": "dist"
+   }
+   ```
 
-3. Add the following environment variables in the Render dashboard:
+3. Deploy to Vercel:
+   - Connect your GitHub repository to Vercel
+   - Set the framework preset to Vite
+   - Set the root directory to `Client`
+   - Set the build command to `npm run build:vercel`
+   - Set the output directory to `dist`
+
+4. Add the following environment variables in the Vercel dashboard:
    ```
    VITE_API_URL=https://your-backend-url.onrender.com/api
    ```
 
-4. Deploy the site
+5. Deploy the site
 
 ### Troubleshooting Deployment Issues
 

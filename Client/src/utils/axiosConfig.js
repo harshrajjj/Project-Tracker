@@ -3,11 +3,27 @@ import axios from 'axios';
 // Determine if we're in production or development
 const isProduction = import.meta.env.PROD;
 
-// In production, we might need to use the full URL of the API
-// For Render deployments, you might need to use the actual URL of your backend
-const apiBaseURL = isProduction
-  ? (import.meta.env.VITE_API_URL || '/api') // Use environment variable if available
-  : '/api'; // Use relative path in development
+// In production, we need to use the full URL of the API
+// For Vercel frontend + Render backend, we must use the absolute URL
+let apiBaseURL;
+
+if (isProduction) {
+  // Use the environment variable if available
+  apiBaseURL = import.meta.env.VITE_API_URL;
+
+  // If the environment variable isn't set, default to the backend URL
+  if (!apiBaseURL) {
+    apiBaseURL = 'https://projecttaskr-backend.onrender.com/api';
+  }
+
+  // Remove trailing slash if present
+  if (apiBaseURL.endsWith('/')) {
+    apiBaseURL = apiBaseURL.slice(0, -1);
+  }
+} else {
+  // In development, use the proxy setup in vite.config.js
+  apiBaseURL = '/api';
+}
 
 console.log('API Base URL:', apiBaseURL);
 
