@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import './App.css'
+import { useEffect } from 'react'
+import { pingServer } from './utils/serverWakeup'
 
 // Pages
 import Home from './pages/Home'
@@ -23,6 +25,16 @@ import ErrorBoundary from './components/common/ErrorBoundary'
 import { AuthProvider } from './context/AuthContext'
 
 function App() {
+  // Ping the server when the app loads to wake it up
+  useEffect(() => {
+    // Wait a short moment after the app loads before pinging
+    const timer = setTimeout(() => {
+      pingServer();
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <AuthProvider>
       <Router>

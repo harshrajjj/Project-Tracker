@@ -120,6 +120,8 @@ export const AuthProvider = ({ children }) => {
   const login = async (userData) => {
     try {
       console.log('AuthContext: Logging in user with email:', userData.email);
+
+      // Set a longer timeout for login requests to handle Render's cold start
       const res = await axiosInstance.post('/auth/login', userData);
       console.log('AuthContext: Login response:', res.data);
 
